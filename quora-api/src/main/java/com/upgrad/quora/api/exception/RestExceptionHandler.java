@@ -52,4 +52,11 @@ public class RestExceptionHandler {
                 new ErrorResponse().code(iqe.getCode()).message(iqe.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
         );
     }
+
+    @ExceptionHandler(AnswerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> answerNotFoundException(AnswerNotFoundException ane, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(ane.getCode()).message(ane.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
+        );
+    }
 }

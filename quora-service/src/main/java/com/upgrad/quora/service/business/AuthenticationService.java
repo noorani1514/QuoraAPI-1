@@ -5,6 +5,7 @@ import com.upgrad.quora.service.dao.UserDao;
 import com.upgrad.quora.service.entity.UserAuthEntity;
 import com.upgrad.quora.service.entity.UserEntity;
 import com.upgrad.quora.service.exception.AuthenticationFailedException;
+import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -50,6 +51,39 @@ public class AuthenticationService {
         }
         else {
             throw new AuthenticationFailedException("ATH-002","Password failed");
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException {
+        UserAuthEntity userAuthEntity = this.checkAuthentication(authorization);
+
+        if (userAuthEntity == null) {
+            throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
+        }
+        final ZonedDateTime now = ZonedDateTime.now();
+        userAuthEntity.setLogoutAt(now.toLocalDateTime());
+        int i = userAuthDao.updateLogoutAt(userAuthEntity);
+        if (i != 0)
+            return userAuthEntity;
+        else
+            throw new SignOutRestrictedException("SGR-002", "User didn't logged out");
+    }
+
+    public UserAuthEntity checkAuthentication(final String authorization) {
+        byte[] decode = Base64.getDecoder().decode(authorization);
+        String decodedText = new String(decode);
+        String[] decodedTextWOBearer = decodedText.split(" ");
+
+        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessTocken(decodedTextWOBearer[1]);
+        if (userAuthEntity == null) {
+            return null;
+        }
+        else if(userAuthEntity.getLogoutAt() != null) {
+            return null;
+        }
+        else {
+            return userAuthEntity;
         }
     }
 }

@@ -45,4 +45,11 @@ public class RestExceptionHandler {
                 new ErrorResponse().code(une.getCode()).message(une.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
         );
     }
+
+    @ExceptionHandler(InvalidQuestionException.class) //QuestionException
+    public ResponseEntity<ErrorResponse> invalidQuestionException(InvalidQuestionException iqe, WebRequest request) {
+        return new ResponseEntity<ErrorResponse>(
+                new ErrorResponse().code(iqe.getCode()).message(iqe.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
+        );
+    }
 }

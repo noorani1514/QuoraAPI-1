@@ -38,7 +38,7 @@ public class AnswerController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, path = "/answer/edit/{answerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<AnswerEditResponse> editAnswer(
+    public ResponseEntity<AnswerEditResponse> editAnswerContent (
             @RequestHeader("authorization") final String accessToken,
             @PathVariable("answerId") final String answerId,
             AnswerEditRequest answerEditRequest)

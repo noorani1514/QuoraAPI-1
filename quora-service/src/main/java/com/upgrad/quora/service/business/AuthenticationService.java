@@ -54,7 +54,7 @@ public class AuthenticationService {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED) //To Signout
     public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException {
         UserAuthEntity userAuthEntity = this.checkAuthentication(authorization);
 

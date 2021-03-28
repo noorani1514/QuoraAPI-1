@@ -41,6 +41,7 @@ public class QuestionBusinessService {
             questionEntity.setDate(now);
             questionEntity.setUser(userAuthEntity.getUser()); //<--- had to set this to set the user
             questionEntity.setUuid(UUID.randomUUID().toString());
+            questionDao.createQuestion(questionEntity);
         }
 
         return questionEntity;
@@ -58,6 +59,7 @@ public class QuestionBusinessService {
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
     public QuestionEntity editQuestionContent(String questionId, String authorization, String content) throws AuthorizationFailedException, InvalidQuestionException {
         UserAuthEntity userAuthEntity = authenticationService.checkAuthentication(authorization);
         QuestionEntity questionEntity = new QuestionEntity();
@@ -66,8 +68,8 @@ public class QuestionBusinessService {
             questionEntity = questionDao.getQuestionById(questionId);
             if (questionEntity == null) {
                 throw new InvalidQuestionException("QUES-001", "Entered question uuid does not exist");
-            } else if (!userAuthEntity.getUuid().equals(questionEntity.getUuid())) {
-                throw new AuthorizationFailedException("ATHR-003", "Only the question owner or admin can delete the question");
+            } else if (!userAuthEntity.getUser().getUuid().equals(questionEntity.getUser().getUuid())) {
+                throw new AuthorizationFailedException("ATHR-003", "Only the question owner can edit the question");
             }
             questionEntity.setContent(content);
             questionEntity = questionDao.editQuestionContent(questionEntity);
@@ -84,8 +86,8 @@ public class QuestionBusinessService {
             questionEntity = questionDao.getQuestionById(questionId);
             if (questionEntity == null) {
                 throw new InvalidQuestionException("QUES-001", "Entered question uuid does not exist");
-            } else if (!userAuthEntity.getUuid().equals(questionEntity.getUuid())) {
-                throw new AuthorizationFailedException("ATHR-003", "Only the question owner or admin can delete the question");
+            } else if (!userAuthEntity.getUser().getUuid().equals(questionEntity.getUser().getUuid())) {
+                throw new AuthorizationFailedException("ATHR-003", "Only the question owner can delete the question");
             }
             questionDao.deleteQuestion(questionEntity);
         }
@@ -96,7 +98,7 @@ public class QuestionBusinessService {
         UserAuthEntity userAuthEntity = authenticationService.checkAuthentication(authorization);
         List<QuestionEntity> getAllQuestionsByUser = new ArrayList<QuestionEntity>();
         if (userAuthEntity != null) {
-            UserEntity questionUser = userDao.getUserById(userId);
+            UserEntity questionUser = userDao.getUserByUUID(userId);
             if (questionUser == null) {
                 throw new UserNotFoundException("USR-001", "User with entered uuid whose question details are to be seen does not exist");
             } else {

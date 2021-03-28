@@ -75,7 +75,7 @@ public class AuthenticationService {
         String decodedText = new String(decode);
         String[] decodedTextWOBearer = decodedText.split(" ");
 
-        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessTocken(decodedTextWOBearer[1]);
+        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessToken(decodedTextWOBearer[1]);
         if (userAuthEntity == null) {
             return null;
         }

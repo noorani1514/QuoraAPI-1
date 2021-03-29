@@ -18,6 +18,15 @@ public class CommonController {
     @Autowired
     private UserProfileService userProfileService;
 
+
+    /**
+     * Get the user details provided the userId.
+     *
+     * @param authorization Authorization token to authenticate the user who is requesting for user details.
+     * @param uuid UUID of the user to get details
+     * @throws AuthorizationFailedException - if the access token is invalid or already logged out.
+     * @throws UserNotFoundException - if the user with given id is not present in the database.
+     */
     @RequestMapping(method = RequestMethod.GET, path = "/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserDetailsResponse> viewUser(@RequestHeader("authorization") final String authorization, @RequestParam("userId") final String uuid) throws AuthorizationFailedException, UserNotFoundException {
         UserEntity userEntity = userProfileService.viewUser(authorization, uuid);
@@ -31,6 +40,6 @@ public class CommonController {
                 .aboutMe(userEntity.getAboutMe())
                 .dob(userEntity.getDob())
                 .contactNumber(userEntity.getContactNumber());
-        return new ResponseEntity<UserDetailsResponse>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

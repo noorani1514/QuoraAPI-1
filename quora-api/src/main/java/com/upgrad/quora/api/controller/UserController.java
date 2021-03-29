@@ -25,12 +25,24 @@ public class UserController {
     @Autowired
     private UserBusinessService userBusinessService;
 
+    /**
+     * This method is for user signup. This method receives the object of SignupUserRequest type with
+     * its attributes being set.
+     *
+     * @param userRequest
+     * @return SignupUserResponse - UUID of the user created.
+     * @exception SignUpRestrictedException - if the username or email already exist in the database.
+     */
     @RequestMapping(method = RequestMethod.POST, path = "/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignupUserResponse> signup(final SignupUserRequest userRequest) throws SignUpRestrictedException {
-        //instance of UserEntity
+        /**
+         * instance of UserEntity
+         */
         UserEntity userEntity = new UserEntity();
 
-        //provides the values provided by the user in the request to the instance object
+        /**
+         * provides the values provided by the user in the request to the instance object
+        */
         userEntity.setUuid(UUID.randomUUID().toString());
         userEntity.setFirstName(userRequest.getFirstName());
         userEntity.setLastName(userRequest.getLastName());
@@ -43,11 +55,15 @@ public class UserController {
         userEntity.setRole("nonadmin");
         userEntity.setContactNumber(userRequest.getContactNumber());
 
-        //pass the user details to the business layer to process
+        /**
+         * pass the user details to the business layer to process
+         * */
         final UserEntity createdUser = userBusinessService.signup(userEntity);
 
-        //create the response
+        /**
+         * create the response
+         * */
         SignupUserResponse userResponse = new SignupUserResponse().id(createdUser.getUuid()).status("USER SUCCESSFULLY REGISTERED");
-        return new ResponseEntity<SignupUserResponse>(userResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 }

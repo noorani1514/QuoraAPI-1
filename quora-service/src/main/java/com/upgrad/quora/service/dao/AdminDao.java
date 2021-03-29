@@ -12,6 +12,10 @@ public class AdminDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+
+    /**
+     * Delete a user from the DB.
+     */
     public UserEntity deleteUser(UserEntity userEntity) {
         entityManager.remove(userEntity);
         return userEntity;

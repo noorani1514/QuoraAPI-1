@@ -5,6 +5,7 @@ import com.upgrad.quora.service.dao.UserDao;
 import com.upgrad.quora.service.entity.UserAuthEntity;
 import com.upgrad.quora.service.entity.UserEntity;
 import com.upgrad.quora.service.exception.AuthenticationFailedException;
+import com.upgrad.quora.service.exception.AuthorizationFailedException;
 import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,12 +56,8 @@ public class AuthenticationService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED) //To Signout
-    public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException {
+    public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException, AuthorizationFailedException {
         UserAuthEntity userAuthEntity = this.checkAuthentication(authorization);
-
-        if (userAuthEntity == null) {
-            throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
-        }
         final ZonedDateTime now = ZonedDateTime.now();
         userAuthEntity.setLogoutAt(now.toLocalDateTime());
         int i = userAuthDao.updateLogoutAt(userAuthEntity);
@@ -70,17 +67,17 @@ public class AuthenticationService {
             throw new SignOutRestrictedException("SGR-002", "User didn't logged out");
     }
 
-    public UserAuthEntity checkAuthentication(final String authorization) {
+    public UserAuthEntity checkAuthentication(final String authorization) throws AuthorizationFailedException {
         byte[] decode = Base64.getDecoder().decode(authorization);
         String decodedText = new String(decode);
         String[] decodedTextWOBearer = decodedText.split(" ");
 
         UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessToken(decodedTextWOBearer[1]);
         if (userAuthEntity == null) {
-            return null;
+            throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }
         else if(userAuthEntity.getLogoutAt() != null) {
-            return null;
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out");
         }
         else {
             return userAuthEntity;

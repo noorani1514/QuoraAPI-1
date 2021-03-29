@@ -61,5 +61,5 @@ Open CMD run below commands
 
 ### Teammates
 - Shreyansh Patni
-- Noor M Noornani
+- Noor M Noorani
 - Sujoy Ghosh

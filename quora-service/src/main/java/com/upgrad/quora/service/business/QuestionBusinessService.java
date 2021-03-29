@@ -86,8 +86,10 @@ public class QuestionBusinessService {
             questionEntity = questionDao.getQuestionById(questionId);
             if (questionEntity == null) {
                 throw new InvalidQuestionException("QUES-001", "Entered question uuid does not exist");
-            } else if (!userAuthEntity.getUser().getUuid().equals(questionEntity.getUser().getUuid())) {
-                throw new AuthorizationFailedException("ATHR-003", "Only the question owner can delete the question");
+            } else if(!userAuthEntity.getUser().getRole().equalsIgnoreCase("admin"))  {
+                if (!userAuthEntity.getUser().getUuid().equals(questionEntity.getUser().getUuid())) {
+                    throw new AuthorizationFailedException("ATHR-003", "Only the question owner or admin can delete the question");
+                }
             }
             questionDao.deleteQuestion(questionEntity);
         }

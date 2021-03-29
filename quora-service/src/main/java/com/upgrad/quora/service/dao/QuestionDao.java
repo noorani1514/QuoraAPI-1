@@ -4,6 +4,7 @@ import com.upgrad.quora.service.entity.QuestionEntity;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -19,15 +20,30 @@ public class QuestionDao {
     }
 
     public List<QuestionEntity> getAllQuestions(){
-        return entityManager.createNamedQuery("getAllQuestions",QuestionEntity.class).getResultList();
+        try {
+            return entityManager.createNamedQuery("getAllQuestions",QuestionEntity.class).getResultList();
+        }
+        catch (NoResultException nre) {
+            return null;
+        }
     }
 
     public List<QuestionEntity> getAllQuestionByUser(String userId){
-        return entityManager.createNamedQuery("getAllQuestionsByUser",QuestionEntity.class).setParameter("userid",userId).getResultList();
+        try {
+            return entityManager.createNamedQuery("getAllQuestionsByUser",QuestionEntity.class).setParameter("userid",userId).getResultList();
+        }
+        catch (NoResultException nre) {
+            return null;
+        }
     }
 
     public QuestionEntity getQuestionById(String uuid){
-        return entityManager.createNamedQuery("getQuestionById",QuestionEntity.class).setParameter("uuid",uuid).getSingleResult();
+        try {
+            return entityManager.createNamedQuery("getQuestionById",QuestionEntity.class).setParameter("uuid",uuid).getSingleResult();
+        }
+        catch (NoResultException nre) {
+            return null;
+        }
     }
 
     public QuestionEntity editQuestionContent(QuestionEntity editQuestionEntity){

@@ -14,7 +14,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(SignUpRestrictedException.class)
     public ResponseEntity<ErrorResponse> signupRestrictedException(SignUpRestrictedException sre, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
-            new ErrorResponse().code(sre.getCode()).message(sre.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
+            new ErrorResponse().code(sre.getCode()).message(sre.getErrorMessage()), HttpStatus.CONFLICT
         );
     }
 
@@ -35,28 +35,28 @@ public class RestExceptionHandler {
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException afe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(afe.getCode()).message(afe.getErrorMessage()), HttpStatus.UNAUTHORIZED
+                new ErrorResponse().code(afe.getCode()).message(afe.getErrorMessage()), HttpStatus.FORBIDDEN
         );
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ErrorResponse> authorizationFailedException(UserNotFoundException une, WebRequest request) {
+    public ResponseEntity<ErrorResponse> userNotFoundException(UserNotFoundException une, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(une.getCode()).message(une.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
+                new ErrorResponse().code(une.getCode()).message(une.getErrorMessage()), HttpStatus.NOT_FOUND
         );
     }
 
     @ExceptionHandler(InvalidQuestionException.class) //QuestionException
     public ResponseEntity<ErrorResponse> invalidQuestionException(InvalidQuestionException iqe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(iqe.getCode()).message(iqe.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
+                new ErrorResponse().code(iqe.getCode()).message(iqe.getErrorMessage()), HttpStatus.BAD_REQUEST
         );
     }
 
     @ExceptionHandler(AnswerNotFoundException.class)
     public ResponseEntity<ErrorResponse> answerNotFoundException(AnswerNotFoundException ane, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
-                new ErrorResponse().code(ane.getCode()).message(ane.getErrorMessage()), HttpStatus.UNPROCESSABLE_ENTITY
+                new ErrorResponse().code(ane.getCode()).message(ane.getErrorMessage()), HttpStatus.BAD_REQUEST
         );
     }
 }

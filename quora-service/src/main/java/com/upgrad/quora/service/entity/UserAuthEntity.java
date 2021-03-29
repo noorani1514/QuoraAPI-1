@@ -17,8 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "user_auth")
 @NamedQueries(
         {
-                @NamedQuery(name = "userAuthByAccessToken", query = "SELECT ua FROM UserAuthEntity ua WHERE ua.accessToken = :accessToken"),
-                @NamedQuery(name = "updateLogoutAt", query = "UPDATE UserAuthEntity au SET au.logoutAt = :logoutAt WHERE au.accessToken = :accessToken")
+                @NamedQuery(name = "userAuthByAccessToken", query = "SELECT ua FROM UserAuthEntity ua WHERE ua.accessToken = :accessToken")
         }
 )
 public class UserAuthEntity implements Serializable {

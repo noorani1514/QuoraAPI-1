@@ -7,6 +7,7 @@ com\upgrad\quora\service\business\PasswordCryptographyProvider.class
 com\upgrad\quora\service\exception\AuthorizationFailedException.class
 com\upgrad\quora\service\ServiceConfiguration.class
 com\upgrad\quora\service\business\AuthenticationService.class
+com\upgrad\quora\service\dao\AnswerDao.class
 com\upgrad\quora\service\entity\AnswerEntity.class
 com\upgrad\quora\service\exception\SignOutRestrictedException.class
 com\upgrad\quora\service\business\UserBusinessService.class
@@ -18,6 +19,7 @@ com\upgrad\quora\service\exception\AnswerNotFoundException.class
 com\upgrad\quora\service\exception\InvalidQuestionException.class
 com\upgrad\quora\service\dao\AdminDao.class
 com\upgrad\quora\service\dao\UserAuthDao.class
+com\upgrad\quora\service\business\AnswerBusinessService.class
 com\upgrad\quora\service\business\AdminService.class
 com\upgrad\quora\service\exception\AuthenticationFailedException.class
 com\upgrad\quora\service\dao\UserDao.class

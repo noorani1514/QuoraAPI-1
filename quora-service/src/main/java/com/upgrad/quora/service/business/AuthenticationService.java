@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Base64;
 import java.util.UUID;
@@ -29,13 +30,13 @@ public class AuthenticationService {
     public UserAuthEntity signin(final String decodedTextWOBasic) throws AuthenticationFailedException {
         byte[] decode = Base64.getDecoder().decode(decodedTextWOBasic);
         String decodedText = new String(decode);
-        String[] decodedCrendentials = decodedText.split(":");
+        String[] decodedCredentials = decodedText.split(":");
 
-        UserEntity userEntity = userDao.getUserByUserName(decodedCrendentials[0]);
+        UserEntity userEntity = userDao.getUserByUserName(decodedCredentials[0]);
         if (userEntity == null) {
-            throw new AuthenticationFailedException("ATH-001","This username does not exist");
+            throw new AuthenticationFailedException("ATH-001", "This username does not exist");
         }
-        final String encryptedPassword = PasswordCryptographyProvider.encrypt(decodedCrendentials[1], userEntity.getSalt());
+        final String encryptedPassword = PasswordCryptographyProvider.encrypt(decodedCredentials[1], userEntity.getSalt());
         if (encryptedPassword.equals(userEntity.getPassword())) {
             JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(encryptedPassword);
             UserAuthEntity userAuthEntity = new UserAuthEntity();
@@ -57,14 +58,24 @@ public class AuthenticationService {
 
     @Transactional(propagation = Propagation.REQUIRED) //To Signout
     public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException, AuthorizationFailedException {
-        UserAuthEntity userAuthEntity = this.checkAuthentication(authorization);
-        final ZonedDateTime now = ZonedDateTime.now();
-        userAuthEntity.setLogoutAt(now.toLocalDateTime());
-        int i = userAuthDao.updateLogoutAt(userAuthEntity);
-        if (i != 0)
-            return userAuthEntity;
-        else
-            throw new SignOutRestrictedException("SGR-002", "User didn't logged out");
+        byte[] decode = Base64.getDecoder().decode(authorization);
+        String decodedText = new String(decode);
+        String[] decodedTextWOBearer = decodedText.split(" ");
+
+        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessToken(decodedTextWOBearer[1]);
+//        For test cases please comment the encryption decryption part above that is from line 60 - 64 and
+//        uncomment the below line 67
+//        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessToken(authorization);
+        if (userAuthEntity == null) {
+            throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
+        }
+        if(userAuthEntity.getLogoutAt() != null) {
+            throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
+        }
+        LocalDateTime now = LocalDateTime.now();
+        userAuthEntity.setLogoutAt(now);
+        UserAuthEntity loggedOutUser = userAuthDao.updateLogoutAt(userAuthEntity);
+        return loggedOutUser;
     }
 
     public UserAuthEntity checkAuthentication(final String authorization) throws AuthorizationFailedException {
@@ -73,6 +84,9 @@ public class AuthenticationService {
         String[] decodedTextWOBearer = decodedText.split(" ");
 
         UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessToken(decodedTextWOBearer[1]);
+//        For test cases please comment the encryption decryption part above that is from line 82 - 86 and
+//        uncomment the below line 89
+//        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessToken(authorization);
         if (userAuthEntity == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }

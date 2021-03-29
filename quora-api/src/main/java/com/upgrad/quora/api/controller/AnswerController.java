@@ -4,13 +4,13 @@ import com.upgrad.quora.api.model.*;
 import com.upgrad.quora.service.business.AnswerBusinessService;
 import com.upgrad.quora.service.entity.AnswerEntity;
 import com.upgrad.quora.service.exception.AnswerNotFoundException;
+import com.upgrad.quora.service.exception.AuthorizationFailedException;
+import com.upgrad.quora.service.exception.InvalidQuestionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.upgrad.quora.service.exception.AuthorizationFailedException;
-import com.upgrad.quora.service.exception.InvalidQuestionException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +44,8 @@ public class AnswerController {
             AnswerEditRequest answerEditRequest)
             throws AuthorizationFailedException, AnswerNotFoundException {
         AnswerEditResponse answerEditResponse = new AnswerEditResponse();
-        AnswerEntity answerEntity = new AnswerEntity();
-        answerEntity.setAns(answerEditRequest.getContent());
+
+        AnswerEntity answerEntity = answerBusinessService.editAnswerContent(accessToken, answerId, answerEditRequest.getContent());
         answerEditResponse.setId(answerEntity.getUuid());
         answerEditResponse.setStatus("ANSWER EDITED");
         return new ResponseEntity<>(answerEditResponse, HttpStatus.OK);
@@ -69,7 +69,7 @@ public class AnswerController {
     public ResponseEntity<List<AnswerDetailsResponse>> getAllAnswersToQuestion(
             @RequestHeader("authorization") final String authorization,
             @PathVariable("questionId") final String questionId)
-            throws AuthorizationFailedException, InvalidQuestionException {
+            throws AuthorizationFailedException, InvalidQuestionException, AnswerNotFoundException {
         List<AnswerDetailsResponse> answerDetailsResponse = new ArrayList<AnswerDetailsResponse>();
         List<AnswerEntity> answerEntityList = answerBusinessService
                 .getAllAnswersToQuestion(authorization, questionId);

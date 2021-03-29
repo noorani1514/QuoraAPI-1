@@ -54,7 +54,7 @@ public class AuthenticationService {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED) //To Signout
     public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException {
         UserAuthEntity userAuthEntity = this.checkAuthentication(authorization);
 
@@ -75,7 +75,7 @@ public class AuthenticationService {
         String decodedText = new String(decode);
         String[] decodedTextWOBearer = decodedText.split(" ");
 
-        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessTocken(decodedTextWOBearer[1]);
+        UserAuthEntity userAuthEntity = userAuthDao.getUserAuthByAccessToken(decodedTextWOBearer[1]);
         if (userAuthEntity == null) {
             return null;
         }

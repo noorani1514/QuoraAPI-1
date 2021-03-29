@@ -44,8 +44,7 @@ public class AnswerEntity implements Serializable {
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
-    @NotNull
-    private UserEntity user;
+    private UserAuthEntity user;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -90,11 +89,11 @@ public class AnswerEntity implements Serializable {
     }
 
 
-    public UserEntity getUser() {
+    public UserAuthEntity getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(UserAuthEntity user) {
         this.user = user;
     }
 

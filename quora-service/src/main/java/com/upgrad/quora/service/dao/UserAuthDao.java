@@ -10,6 +10,7 @@ import javax.persistence.Query;
 
 @Repository
 public class UserAuthDao {
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -18,13 +19,12 @@ public class UserAuthDao {
         return userAuthEntity;
     }
 
-    public UserAuthEntity getUserAuthByAccessTocken(final String accessToken) {
+    public UserAuthEntity getUserAuthByAccessToken(final String accessToken) {
         try {
             return entityManager.createNamedQuery("userAuthByAccessToken", UserAuthEntity.class)
                     .setParameter("accessToken", accessToken)
                     .getSingleResult();
-        }
-        catch (NoResultException nre) {
+        } catch (NoResultException nre) {
             return null;
         }
     }

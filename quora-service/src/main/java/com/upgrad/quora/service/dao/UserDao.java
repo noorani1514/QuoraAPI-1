@@ -13,7 +13,7 @@ public class UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    /*
+    /**
     * fetch details of user by the user name
     *
     * @param userName -> User name of the user whose details need to fetched.
@@ -29,7 +29,7 @@ public class UserDao {
         }
     }
 
-    /*
+    /**
     * fetch the details of user by the email id
     *
     * @param email -> Email ID of the user whose details need to be fetched
@@ -45,7 +45,7 @@ public class UserDao {
         }
     }
 
-    /*
+    /**
     * create the user details and persist it to the database
     *
     * @param userEntity -> user details of the user that to be persisted

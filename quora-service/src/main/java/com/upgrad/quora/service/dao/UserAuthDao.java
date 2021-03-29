@@ -13,11 +13,25 @@ public class UserAuthDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+
+    /**
+     * Persist UserAuthEntity object in DB.
+     *
+     * @param userAuthEntity to be persisted in the DB.
+     * @return Persisted UserAuthEntity object
+     */
     public UserAuthEntity createUserAuth(UserAuthEntity userAuthEntity) {
         entityManager.persist(userAuthEntity);
         return userAuthEntity;
     }
 
+
+    /**
+     * Gets the user auth information based on the access token.
+     *
+     * @param accessToken access token of the user auth whose details is to be fetched.
+     * @return A single user auth object or null
+     */
     public UserAuthEntity getUserAuthByAccessToken(final String accessToken) {
         try {
             return entityManager.createNamedQuery("userAuthByAccessToken", UserAuthEntity.class)
@@ -28,6 +42,12 @@ public class UserAuthDao {
         }
     }
 
+
+    /**
+     * Updates the UserAuthEntity object's logout time present in the DB.
+     *
+     * @param userAuthEntity Persisted UserAuthEntity object
+     */
     public UserAuthEntity updateLogoutAt(UserAuthEntity userAuthEntity) {
         entityManager.merge(userAuthEntity);
         return userAuthEntity;

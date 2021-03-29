@@ -17,6 +17,19 @@ public class UserProfileService {
     @Autowired
     private UserDao userDao;
 
+    /**
+     * Service method to view a user
+     *
+     * signed in user can view any user details
+     *
+     * @param authorization authorization of the signed in user from header
+     * @param uuid user id
+     *
+     * @exception AuthorizationFailedException
+     * @exception UserNotFoundException
+     *
+     * @return details of the user
+     * */
     public UserEntity viewUser(final String authorization, final String uuid) throws AuthorizationFailedException, UserNotFoundException {
         UserAuthEntity userAuthEntity = authenticationService.checkAuthentication(authorization);
         if (userAuthEntity == null) {

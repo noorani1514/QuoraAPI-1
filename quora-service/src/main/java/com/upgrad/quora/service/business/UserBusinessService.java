@@ -17,6 +17,20 @@ public class UserBusinessService {
     @Autowired
     PasswordCryptographyProvider passwordCryptographyProvider;
 
+    /**
+     * Service method to sign up a user
+     *
+     * user can add his details
+     * check if the user name or email is already registered
+     * uuid which is generated randomly
+     * encrypt his password with a randomly generated salt
+     *
+     * @param userEntity user that requested for sign up
+     *
+     * @exception SignUpRestrictedException
+     *
+     * @return a user which got persisted
+     * */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity signup(UserEntity userEntity) throws SignUpRestrictedException {
 

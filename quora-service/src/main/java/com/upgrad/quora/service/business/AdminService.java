@@ -22,6 +22,19 @@ public class AdminService {
     @Autowired
     private AdminDao adminDao;
 
+    /**
+     * Service of the user to be deleted
+     *
+     * Only the signed in Admin can delete the user from the database
+     *
+     * @param uuid id of the user
+     * @param authorization authorization of the signed in user from header
+     *
+     * @exception AuthorizationFailedException
+     * @exception UserNotFoundException
+     *
+     * @return the details of the deleted user
+     * */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserEntity deleteUser(final String authorization, final String uuid) throws AuthorizationFailedException, UserNotFoundException {
         UserAuthEntity userAuthEntity = authenticationService.checkAuthentication(authorization);

@@ -67,6 +67,9 @@ public class AnswerDao {
 
     /**
      * Fetches answer by given questionId from the DB.
+     *
+     * @param question question details whose answers need to fetched.
+     * @return all the answers of that particular question
      */
     public List<AnswerEntity> getAnswersToQuestion(final String question) {
         try {

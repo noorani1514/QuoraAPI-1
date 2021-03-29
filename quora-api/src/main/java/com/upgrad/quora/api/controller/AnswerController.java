@@ -22,6 +22,19 @@ public class AnswerController {
     @Autowired
     private AnswerBusinessService answerBusinessService;
 
+    /**
+     * Controller method to create a answer
+     *
+     * calls the create answer method of the answer service
+     *
+     * @param accessToken authorization of the signed in user from header
+     * @param questionId question id of the question whose answer needs to be added
+     *
+     * @exception AuthorizationFailedException
+     * @exception InvalidQuestionException
+     *
+     * @return  the 201 status code with the id of the answer with status ANSWER CREATED
+     * */
     @RequestMapping(method = RequestMethod.POST, path = "/question/{questionId}/answer/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerResponse> createAnswer(
             @RequestHeader("authorization") final String accessToken,
@@ -37,6 +50,19 @@ public class AnswerController {
         return new ResponseEntity<>(answerResponse, HttpStatus.CREATED);
     }
 
+    /**
+     * Controller method to edit an answer
+     *
+     * calls the edit answer method of the answer service
+     *
+     * @param accessToken authorization of the signed in user from header
+     * @param answerId id of the answer which needs to be edited
+     *
+     * @exception AuthorizationFailedException
+     * @exception AnswerNotFoundException
+     *
+     * @return  the 200 status code with the id of the answer with status ANSWER EDITED
+     * */
     @RequestMapping(method = RequestMethod.PUT, path = "/answer/edit/{answerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerEditResponse> editAnswerContent(
             @RequestHeader("authorization") final String accessToken,
@@ -51,6 +77,19 @@ public class AnswerController {
         return new ResponseEntity<>(answerEditResponse, HttpStatus.OK);
     }
 
+    /**
+     * Controller method to delete an answer
+     *
+     * calls the delete answer method of the answer service
+     *
+     * @param accessToken authorization of the signed in user from header
+     * @param answerId id of the answer which needs to be edited
+     *
+     * @exception AuthorizationFailedException
+     * @exception AnswerNotFoundException
+     *
+     * @return  the 200 status code with the id of the answer with status ANSWER DELETED
+     * */
     @RequestMapping(
             method = RequestMethod.DELETE,
             path = "/answer/delete/{answerId}",
@@ -65,6 +104,19 @@ public class AnswerController {
         return new ResponseEntity<>(answerDeleteResponse, HttpStatus.OK);
     }
 
+    /**
+     * Controller method to get all answers
+     *
+     * calls the get all answers method of the answer service
+     *
+     * @param authorization authorization of the signed in user from header
+     * @param questionId id of the answer which needs to be edited
+     *
+     * @exception AuthorizationFailedException
+     * @exception AnswerNotFoundException
+     *
+     * @return  the 200 status code with all the answers id and the answers
+     * */
     @RequestMapping(method = RequestMethod.GET, path = "/answer/all/{questionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List<AnswerDetailsResponse>> getAllAnswersToQuestion(
             @RequestHeader("authorization") final String authorization,

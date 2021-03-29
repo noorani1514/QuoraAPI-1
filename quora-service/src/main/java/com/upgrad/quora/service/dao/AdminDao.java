@@ -15,6 +15,9 @@ public class AdminDao {
 
     /**
      * Delete a user from the DB.
+     *
+     * @param userEntity  user that needs to be deleted
+     * @return the user who got deleted
      */
     public UserEntity deleteUser(UserEntity userEntity) {
         entityManager.remove(userEntity);

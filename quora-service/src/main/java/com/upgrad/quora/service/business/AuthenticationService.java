@@ -4,9 +4,7 @@ import com.upgrad.quora.service.dao.UserAuthDao;
 import com.upgrad.quora.service.dao.UserDao;
 import com.upgrad.quora.service.entity.UserAuthEntity;
 import com.upgrad.quora.service.entity.UserEntity;
-import com.upgrad.quora.service.exception.AuthenticationFailedException;
-import com.upgrad.quora.service.exception.AuthorizationFailedException;
-import com.upgrad.quora.service.exception.SignOutRestrictedException;
+import com.upgrad.quora.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,6 +24,22 @@ public class AuthenticationService {
     @Autowired
     private UserAuthDao userAuthDao;
 
+    /**
+     * Service method to signin a user
+     *
+     * When users provided correct username and password then a user is able to signed in with details as
+     * every signed in will have a unique access token
+     * uuid
+     * user who got signed in
+     * time at which he logged in
+     * time at which the token will expires
+     *
+     * @param decodedTextWOBasic decoded text without the basic in it
+     *
+     * @exception AuthenticationFailedException
+     *
+     * @return user authentication details of signed user
+     * */
     @Transactional(propagation = Propagation.REQUIRED)
     public UserAuthEntity signin(final String decodedTextWOBasic) throws AuthenticationFailedException {
         byte[] decode = Base64.getDecoder().decode(decodedTextWOBasic);
@@ -56,8 +70,19 @@ public class AuthenticationService {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRED) //To Signout
-    public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException, AuthorizationFailedException {
+    /**
+     * Service method to sign out a user
+     *
+     * Check the user with the authorization details and update the logged out time in the user_auth table
+     *
+     * @param authorization authorization of the signed in user from header
+     *
+     * @exception SignOutRestrictedException
+     *
+     * @return user who signed out
+     * */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public UserAuthEntity signout(final String authorization) throws SignOutRestrictedException {
         byte[] decode = Base64.getDecoder().decode(authorization);
         String decodedText = new String(decode);
         String[] decodedTextWOBearer = decodedText.split(" ");
@@ -78,6 +103,18 @@ public class AuthenticationService {
         return loggedOutUser;
     }
 
+    /**
+     * method to check the authentication of the user
+     *
+     * Check for the user if he is signed in or not
+     * and if he signed in then he is an active signed in or he logged himself out
+     *
+     * @param authorization authorization of the signed in user from header
+     *
+     * @exception AuthorizationFailedException
+     *
+     * @return signed user details
+     * */
     public UserAuthEntity checkAuthentication(final String authorization) throws AuthorizationFailedException {
         byte[] decode = Base64.getDecoder().decode(authorization);
         String decodedText = new String(decode);

@@ -13,7 +13,9 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-
+/**
+ * Answer Entity mapped with the answer table with the database
+ * */
 @Entity
 @Table(name = "answer")
 @NamedQueries({

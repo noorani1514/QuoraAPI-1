@@ -46,7 +46,8 @@ public class UserAuthDao {
     /**
      * Updates the UserAuthEntity object's logout time present in the DB.
      *
-     * @param userAuthEntity Persisted UserAuthEntity object
+     * @param userAuthEntity user that needs to be logged out
+     * @return the logged out user
      */
     public UserAuthEntity updateLogoutAt(UserAuthEntity userAuthEntity) {
         entityManager.merge(userAuthEntity);

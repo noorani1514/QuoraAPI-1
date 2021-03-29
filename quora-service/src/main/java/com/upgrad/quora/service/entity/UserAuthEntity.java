@@ -13,6 +13,9 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+/**
+ * User Auth Entity mapped with the user_auth table with the database
+ * */
 @Entity
 @Table(name = "user_auth")
 @NamedQueries(

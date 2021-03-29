@@ -11,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class RestExceptionHandler {
 
+    //Exception handler for SignUpRestrictedException
     @ExceptionHandler(SignUpRestrictedException.class)
     public ResponseEntity<ErrorResponse> signupRestrictedException(SignUpRestrictedException sre, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
@@ -18,6 +19,7 @@ public class RestExceptionHandler {
         );
     }
 
+    //Exception handler for AuthenticationFailedException
     @ExceptionHandler(AuthenticationFailedException.class)
     public ResponseEntity<ErrorResponse> authenticationFailedException(AuthenticationFailedException afe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
@@ -25,6 +27,7 @@ public class RestExceptionHandler {
         );
     }
 
+    //Exception handler for SignOutRestrictedException
     @ExceptionHandler(SignOutRestrictedException.class)
     public ResponseEntity<ErrorResponse> signOutRestrictedException(SignOutRestrictedException sre, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
@@ -32,6 +35,7 @@ public class RestExceptionHandler {
         );
     }
 
+    //Exception handler for AuthorizationFailedException
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException afe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
@@ -39,6 +43,7 @@ public class RestExceptionHandler {
         );
     }
 
+    //Exception handler for UserNotFoundException
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> userNotFoundException(UserNotFoundException une, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
@@ -46,6 +51,7 @@ public class RestExceptionHandler {
         );
     }
 
+    //Exception handler for InvalidQuestionException
     @ExceptionHandler(InvalidQuestionException.class) //QuestionException
     public ResponseEntity<ErrorResponse> invalidQuestionException(InvalidQuestionException iqe, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(
@@ -53,6 +59,7 @@ public class RestExceptionHandler {
         );
     }
 
+    //Exception handler for AnswerNotFoundException
     @ExceptionHandler(AnswerNotFoundException.class)
     public ResponseEntity<ErrorResponse> answerNotFoundException(AnswerNotFoundException ane, WebRequest request) {
         return new ResponseEntity<ErrorResponse>(

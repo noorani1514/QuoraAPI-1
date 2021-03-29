@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
-/*
+/**
  * User Entity mapped with the users table with the database
  * */
 @Entity

@@ -14,11 +14,22 @@ public class QuestionDao {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+    * Create the question and persist it in the database
+    *
+    * @param questionEntity the question which needs to be persisted
+    * @return question which got created
+    * */
     public QuestionEntity createQuestion(QuestionEntity questionEntity){
         entityManager.persist(questionEntity);
         return questionEntity;
     }
 
+    /**
+     * Fetch all the question posted any user
+     *
+     * @return list of all the questions
+    * */
     public List<QuestionEntity> getAllQuestions(){
         try {
             return entityManager.createNamedQuery("getAllQuestions",QuestionEntity.class).getResultList();
@@ -28,6 +39,12 @@ public class QuestionDao {
         }
     }
 
+    /**
+     * fetch all the questions of a particular user
+     *
+     * @param userId user id of the user whose questions need to be fetched
+     * @return list of all the questions posted by a particular user
+     * */
     public List<QuestionEntity> getAllQuestionByUser(String userId){
         try {
             return entityManager.createNamedQuery("getAllQuestionsByUser",QuestionEntity.class).setParameter("userid",userId).getResultList();
@@ -37,6 +54,12 @@ public class QuestionDao {
         }
     }
 
+    /**
+     * fetch the question with its id
+     *
+     * @param uuid id of the question
+     * @return question details
+     * */
     public QuestionEntity getQuestionById(String uuid){
         try {
             return entityManager.createNamedQuery("getQuestionById",QuestionEntity.class).setParameter("uuid",uuid).getSingleResult();
@@ -46,11 +69,21 @@ public class QuestionDao {
         }
     }
 
+    /**
+     * Edit the question content
+     * @param editQuestionEntity question which needs to be edited
+     * @return question that got edited.
+     * */
     public QuestionEntity editQuestionContent(QuestionEntity editQuestionEntity){
         entityManager.merge(editQuestionEntity);
-        return editQuestionEntity; //<-- instead of returning directly from the line above, doing it after merge operation.
+        return editQuestionEntity;
     }
 
+    /**
+     * Delete the question
+     *
+     * @param deleteQuestion question that needs to be deleted
+     * */
     public void deleteQuestion(QuestionEntity deleteQuestion){
         entityManager.remove(deleteQuestion);
     }

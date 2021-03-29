@@ -44,3 +44,22 @@ As you have already learnt about different HTTP response status codes, implement
 3. **HttpStatus.UNAUTHORIZED**
 4. **HttpStatus.FORBIDDEN**
 5. **HttpStatus.NOT_FOUND**
+
+## System Requirement
+- Java 1.8
+- Maven 3.6.3
+- PostgreSQL DB
+
+## Code Setup
+
+Open CMD run below commands
+- git clone https://github.com/ShreyanshPatni/QuoraAPI.git
+- cd quora-db
+- mvn clean -Psetup
+- cd..
+- mvn clean install -DskipTests
+
+### Teammates
+- Shreyansh Patni
+- Noor M Noornani
+- Sujoy Ghosh
